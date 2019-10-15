@@ -1,0 +1,18 @@
+
+.user_form {
+    background: #172a3a;
+}
+.user_form .form_label {
+    color: #233f78
+}
+.slider_text {
+    margin: 5px 10px;
+}
+.form_group {
+    padding: 20px;
+    background-color: #ffff;
+    border-radius: 4px
+}
+.history_container {
+    background: #44a1a0;
+}
