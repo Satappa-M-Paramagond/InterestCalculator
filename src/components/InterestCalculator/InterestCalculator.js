@@ -9,6 +9,7 @@ class InterestCalculator extends React.Component {
 		this.state = { loanValues : { amount : '', numMonths : ''}, data : { status : false }, isLoading : false };
 		this._handleChange = this._handleChange.bind(this);
 		this._handleSubmit = this._handleSubmit.bind(this);
+		this._handleClear = this._handleClear.bind(this);
 		this._handleReCalculate = this._handleReCalculate.bind(this);
 	}
 
@@ -43,6 +44,11 @@ class InterestCalculator extends React.Component {
 			localStorage.setItem('numMonths', numMonths);
 
 		});
+	}
+
+	// Clear the user inputs
+	_handleClear = () => {
+		this.setState({ loanValues : { amount : '', numMonths : ''} });
 	}
 
 	// Recalculate the recent
@@ -108,20 +114,22 @@ class InterestCalculator extends React.Component {
 								</InputGroup>
 							</Form.Group>
 							
-							{/* Submit button to calculate interest and monthly payment */}
-							<Form.Group>
-								<Button type="submit" id="submit_btn" variant="info" disabled={isLoading}>{ isLoading ? 'Calculating . . .' : 'Calculate' }</Button>
+							{/* Submit button to calculate interest and monthly payment and reset button to clear all inputs and sliders */}
+							<Form.Group className="float-right">
+								<Button type="button" variant="danger" className="btn-lg" onClick={this._handleClear}>Clear</Button>
+								<Button type="submit" id="submit_btn" variant="info" className="btn-lg ml-3" disabled={isLoading}>{ isLoading ? 'Calculating...' : 'Calculate' }</Button>
 							</Form.Group>
 						</Form>
 
 						{/* Results display */}
 						{
 							data && data.status ? 
-								<Col>
-									<h4 className="text-light">Interest rate : {data.interestRate}</h4>
-									<h4 className="text-light">Monthly payment : {data.monthlyPayment.currency} {data.monthlyPayment.amount}</h4>
-									<h4 className="text-light">Number of payments : {data.numPayments}</h4>
-									<h4 className="text-light">Principal payment : {data.principal.currency} {data.principal.amount}</h4>
+								<Col className="mt-4 pt-4">
+									<h2 className="my-4 text-light"> Results :</h2>
+									<h5 className="text-light">Interest rate : {data.interestRate}</h5>
+									<h5 className="text-light">Monthly payment : {data.monthlyPayment.currency} {data.monthlyPayment.amount}</h5>
+									<h5 className="text-light">Number of payments : {data.numPayments}</h5>
+									<h5 className="text-light">Principal payment : {data.principal.currency} {data.principal.amount}</h5>
 								</Col>
 							: ''
 						}
@@ -132,11 +140,11 @@ class InterestCalculator extends React.Component {
 					<Col className="mt-2">
 						<div className="history_container p-2">
 							<h4 className="text-light text-center"> Recently calculated </h4>
-							<br/>
-							<h5 className="text-light"> Amount : {localStorage.getItem('amount')}</h5>
-							<h5 className="text-light"> Duration : {localStorage.getItem('numMonths')}</h5>
-							<br/>
-							<Button type="button" variant="light" onClick={this._handleReCalculate}>Recalculate</Button>
+							<div className="mt-4">
+								<h5 className="text-light"> Amount : {localStorage.getItem('amount')}</h5>
+								<h5 className="text-light"> Duration : {localStorage.getItem('numMonths')}</h5>
+								<Button type="button" variant="light" className="mt-2" onClick={this._handleReCalculate}>Recalculate</Button>
+							</div>
 						</div>
 					</Col>
 
