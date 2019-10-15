@@ -1,4 +1,4 @@
-# InterestCalculator
+# Interest Calculator
 Interets calculator has followinf features
 - User input panel with form for user to enter the loan amount and loan duration.
 - Results container to display the interest calculated and monthly payments.
