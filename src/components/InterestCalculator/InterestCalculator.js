@@ -11,6 +11,7 @@ class InterestCalculator extends React.Component {
 		this._handleSubmit = this._handleSubmit.bind(this);
 		this._handleClear = this._handleClear.bind(this);
 		this._handleReCalculate = this._handleReCalculate.bind(this);
+		this._handleClearHistory = this._handleClearHistory.bind(this);
 	}
 
 	// On change input handler
@@ -33,16 +34,33 @@ class InterestCalculator extends React.Component {
 		fetch('https://ftl-frontend-test.herokuapp.com/interest?amount=' + amount + '&numMonths=' + numMonths)
 		.then(res => res.json())
 		.then(response => {
+
 			let data = response;
 			data.status = true;
+
+			// Get the existing values from local storage
+			let storedData = JSON.parse(localStorage.getItem('loanData'));
+
+			// Push news values to array
+			const loanData = { amount : amount, numMonths : numMonths };
+
+			if(storedData && storedData !== '')
+			{
+				storedData.push(loanData);
+			}
+			else
+			{
+				storedData = new Array(loanData);
+			}
+
+			// Store the news values to local storage
+			localStorage.setItem('loanData', JSON.stringify(storedData));
 
 			// Set the response to state
 			this.setState({ data : response, isLoading : false });
 
-			// Store the values in local staorage
-			localStorage.setItem('amount', amount);
-			localStorage.setItem('numMonths', numMonths);
-
+			// Clear inputs after displaying results
+			this.setState({ loanValues : { amount : '', numMonths : ''}});
 		});
 	}
 
@@ -52,9 +70,7 @@ class InterestCalculator extends React.Component {
 	}
 
 	// Recalculate the recent
-	_handleReCalculate = () => {
-		const amount = localStorage.getItem('amount');
-		const numMonths = localStorage.getItem('numMonths');
+	_handleReCalculate = (amount, numMonths) => {
 
 		// Set the current values in states
 		let loanValues = { amount : amount, numMonths : numMonths };
@@ -62,12 +78,22 @@ class InterestCalculator extends React.Component {
 
 		// Trigger the submit button
 		setTimeout( function () { document.getElementById('submit_btn').click(); }, 500);
-		
+	}
+
+	// Clear all history from local storage
+	_handleClearHistory = () => {
+		localStorage.clear();
+
+		// Update render after clearing local storage
+		this.forceUpdate();
 	}
 	
 	render () {
 
 		const { loanValues, data, isLoading} = this.state;
+
+		// Get the values from local storge to display at history
+		const loanData = JSON.parse(localStorage.getItem('loanData'));
 
 		return (
 			<Container className="loan_container pt-3">
@@ -115,16 +141,17 @@ class InterestCalculator extends React.Component {
 							</Form.Group>
 							
 							{/* Submit button to calculate interest and monthly payment and reset button to clear all inputs and sliders */}
-							<Form.Group className="float-right">
+							<Form.Group className="text-right">
 								<Button type="button" variant="danger" className="btn-lg" onClick={this._handleClear}>Clear</Button>
-								<Button type="submit" id="submit_btn" variant="info" className="btn-lg ml-3" disabled={isLoading}>{ isLoading ? 'Calculating...' : 'Calculate' }</Button>
+								<Button type="submit" id="submit_btn" variant="info" className="btn-lg ml-3">{ isLoading ? 'Calculating...' : 'Calculate' }</Button>
 							</Form.Group>
 						</Form>
 
 						{/* Results display */}
 						{
 							data && data.status ? 
-								<Col className="mt-4 pt-4">
+								<Col>
+									<hr />
 									<h2 className="my-4 text-info"> Results :</h2>
 									<h5 className="text-blue">Interest rate : {data.interestRate}</h5>
 									<h5 className="text-blue">Monthly payment : {data.monthlyPayment.currency} {data.monthlyPayment.amount}</h5>
@@ -140,11 +167,28 @@ class InterestCalculator extends React.Component {
 					<Col className="mt-2">
 						<div className="history_container p-4">
 							<h4 className="text-info text-center"> History </h4>
-							<div className="mt-4">
-								<h5 className="text-blue"> Amount : {localStorage.getItem('amount')}</h5>
-								<h5 className="text-blue"> Duration : {localStorage.getItem('numMonths')}</h5>
-								<Button type="button" variant="info" className="mt-2" onClick={this._handleReCalculate}>Recalculate</Button>
-							</div>
+							{
+								loanData && loanData.length > 0 ? 
+									loanData.map(data => (
+										<div className="mt-4">
+											<h6 className="text-blue"> Amount : {data.amount}</h6>
+											<h6 className="text-blue"> Duration : {data.numMonths}</h6>
+											<Button type="button" variant="info" className="btn-sm mt-2" onClick={() => this._handleReCalculate(data.amount, data.numMonths)}>Recalculate</Button>
+											<hr />
+										</div>
+									))
+								: 
+									<h6 className="text-blue text-center mt-5"> No history found.</h6>
+							}
+
+							{
+								loanData && loanData.length > 0 ? 
+									<div className="text-center mt-4">
+										<Button type="button" variant="danger" className="btn-sm" onClick={this._handleClearHistory}>Clear all</Button>
+									</div>
+								: <div></div>
+							}
+							
 						</div>
 					</Col>
 
