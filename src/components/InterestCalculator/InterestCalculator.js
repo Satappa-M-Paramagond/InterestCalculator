@@ -70,11 +70,11 @@ class InterestCalculator extends React.Component {
 		const { loanValues, data, isLoading} = this.state;
 
 		return (
-			<Container className="loan_container">
+			<Container className="loan_container pt-3">
 				<Row>
 					<Col xl={8} lg={8} md={8} sm={8} xs={12} className="user_form p-4 mt-2">
 
-						<h1 className="text-light text-center"> Interest calculator</h1>
+						<h1 className="text-info text-center"> Interest calculator</h1>
 						<br/>
 
 						{/* User input form for user inputs */}
@@ -125,11 +125,11 @@ class InterestCalculator extends React.Component {
 						{
 							data && data.status ? 
 								<Col className="mt-4 pt-4">
-									<h2 className="my-4 text-light"> Results :</h2>
-									<h5 className="text-light">Interest rate : {data.interestRate}</h5>
-									<h5 className="text-light">Monthly payment : {data.monthlyPayment.currency} {data.monthlyPayment.amount}</h5>
-									<h5 className="text-light">Number of payments : {data.numPayments}</h5>
-									<h5 className="text-light">Principal payment : {data.principal.currency} {data.principal.amount}</h5>
+									<h2 className="my-4 text-info"> Results :</h2>
+									<h5 className="text-blue">Interest rate : {data.interestRate}</h5>
+									<h5 className="text-blue">Monthly payment : {data.monthlyPayment.currency} {data.monthlyPayment.amount}</h5>
+									<h5 className="text-blue">Number of payments : {data.numPayments}</h5>
+									<h5 className="text-blue">Principal payment : {data.principal.currency} {data.principal.amount}</h5>
 								</Col>
 							: ''
 						}
@@ -138,12 +138,12 @@ class InterestCalculator extends React.Component {
 
 					{/* Recently calculated user inputs history */}
 					<Col className="mt-2">
-						<div className="history_container p-2">
-							<h4 className="text-light text-center"> Recently calculated </h4>
+						<div className="history_container p-4">
+							<h4 className="text-info text-center"> History </h4>
 							<div className="mt-4">
-								<h5 className="text-light"> Amount : {localStorage.getItem('amount')}</h5>
-								<h5 className="text-light"> Duration : {localStorage.getItem('numMonths')}</h5>
-								<Button type="button" variant="light" className="mt-2" onClick={this._handleReCalculate}>Recalculate</Button>
+								<h5 className="text-blue"> Amount : {localStorage.getItem('amount')}</h5>
+								<h5 className="text-blue"> Duration : {localStorage.getItem('numMonths')}</h5>
+								<Button type="button" variant="info" className="mt-2" onClick={this._handleReCalculate}>Recalculate</Button>
 							</div>
 						</div>
 					</Col>

@@ -1,6 +1,10 @@
 
+body {
+    background: whitesmoke;
+}
 .user_form {
-    background: #172a3a;
+    background: white;
+    box-shadow: 0px 0px 10px lightgray;
 }
 .user_form .form_label {
     color: #233f78
@@ -8,11 +12,16 @@
 .slider_text {
     margin: 5px 10px;
 }
+.text-blue {
+    color: #233f78;
+}
 .form_group {
     padding: 20px;
-    background-color: #ffff;
+    background-color: whitesmoke;
+    border: 1px solid lightgray;
     border-radius: 4px
 }
 .history_container {
-    background: #44a1a0;
+    background: white;
+    box-shadow: 0px 0px 10px lightgray;
 }
