@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+The project doesn't contain node_modules so we have to run npm install command to install it and then we can start the development server with npm start command.
 ## Available Scripts
 
 In the project directory, you can run:
